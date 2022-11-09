@@ -36,7 +36,7 @@ class PO(models.Model):
     Revision_No = models.IntegerField()
     Printed = models.CharField(max_length = 20)
     Schedule_Order = models.CharField(max_length = 40)
-    Pay_Tax = models.BooleanField()
+    Pay_Tax = models.CharField(max_length = 40)
     Document_Address = models.CharField(max_length = 255)
     Cancellation_Reason = models.CharField(max_length = 255)
     Cancellation_Reason_Description = models.TextField(max_length = 355)
@@ -49,3 +49,5 @@ class PO(models.Model):
 
     def __str__(self):
         return self.Order_No
+
+    #develpe an instance method for queries
