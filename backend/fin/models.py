@@ -1,5 +1,37 @@
 from django.db import models
+from django.db.models import Sum, Count, Q
 
+#Good idea to store important queries in Model. important queires which are called (more than others) from views
+#So Custome managers are needed, as Manager is the interface through which database query operation are provided
+#reasons to use custome manager: to add extra Manager methods, to modify the initial QuerySet the Manager returns.
+#Adding extra Manager methods is the preferred way to add "table-level" functionality to your models.
+#for "row-level" functionality ie., functions act on a single instance of a model object need to use Model methods
+#not custome Manager methods
+
+class POQuerySet(models.QuerySet):
+    
+    def get_all_pos(self):
+        return self
+    
+    def closed_counts(self):
+        return self.filter(Status="Closed").count()
+
+    def top_po_recieved_count(self):
+        return self
+
+    def sum_of_po_amounts_per_supp(self):
+        return self.values('Supplier_Name').annotate(
+            total_count=Sum('Total_Net_Amt_Base', filter=Q(Status="Closed")),
+        ).order_by('-total_count')
+
+    def po_count_per_supp(self):
+        return self.values('Supplier_Name').annotate(
+            total_count=Count('Order_No', filter=Q(Status="Closed")),
+        ).order_by('-total_count')
+        
+
+class POManager(models.Manager):
+    pass
 
 class PO(models.Model):
     Order_No = models.CharField(max_length = 20)
@@ -47,7 +79,11 @@ class PO(models.Model):
     Single_Occurrence = models.CharField(max_length = 20)
     Consolidated = models.CharField(max_length = 100)
 
+    objects = models.Manager()
+    custom_manager = POManager.from_queryset(POQuerySet)()
+
     def __str__(self):
         return self.Order_No
+
 
     #develpe an instance method for queries
