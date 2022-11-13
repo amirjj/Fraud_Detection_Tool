@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum, Count, Q
+from django.db.models import Sum, Count, Q, Subquery
 
 #Good idea to store important queries in Model. important queires which are called (more than others) from views
 #So Custome managers are needed, as Manager is the interface through which database query operation are provided
@@ -12,6 +12,14 @@ class POQuerySet(models.QuerySet):
     
     def get_all_pos(self):
         return self
+
+    def duplicate_amount_same_supplier(self):
+        dups = self.values("Supplier", "Total_Net_Amt_Base", "Status").\
+            annotate(count=Count("Total_Net_Amt_Base")).filter(count__gt=1).order_by('-count')
+        return dups
+        # dup_list = [item for item in dups]
+        # print(dup_list)
+        # return self.extra(where=['(Supplier, Total_Net_Amt_Base, new_class) in %s' % dup_list])
     
     def closed_counts(self):
         return self.filter(Status="Closed").count()
