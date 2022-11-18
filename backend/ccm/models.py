@@ -1,6 +1,6 @@
 from django.db import models
+from fin.models import PO
 
-# Create your models here.
 
 class DARoutines(models.Model):
     sequence_number = models.IntegerField()
@@ -11,3 +11,10 @@ class DARoutines(models.Model):
     def __str__(self):
         print(self.report)
 
+
+class Fraud_schemes(models.Model):
+    fraud_scheme_id = models.CharField(max_length=200)
+    name = models.CharField(max_length=300)
+    description = models.TextField()
+    # fraud_category = models.ForeignKey(Fraud_Category)
+    
