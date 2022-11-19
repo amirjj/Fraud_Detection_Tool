@@ -12,9 +12,17 @@ class DARoutines(models.Model):
         print(self.report)
 
 
+class Fraud_category(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
 class Fraud_schemes(models.Model):
-    fraud_scheme_id = models.CharField(max_length=200)
     name = models.CharField(max_length=300)
     description = models.TextField()
-    # fraud_category = models.ForeignKey(Fraud_Category)
-    
+    fraud_category = models.ForeignKey(Fraud_category, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.name
+

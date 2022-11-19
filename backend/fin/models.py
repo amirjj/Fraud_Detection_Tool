@@ -30,6 +30,13 @@ class POQuerySet(models.QuerySet):
         #Supplier recieved a PO after 3 months
         pass
 
+    def blanked_orders(serlf):
+        pass
+
+    def sequential_purchases(self):
+        pass
+    
+
     def trend_of_pos(self):
         #jump in recieving PO (count & Amount) per supplier
         pass
@@ -123,9 +130,3 @@ class PO(models.Model):
     def __str__(self):
         return self.Order_No
 
-#TODO create a relationship between PO model and ccm.model.Fraud_schemes (as forieng key in PO)
-
-
-#TODO add a one-to-one relation-ship model to query-sets explaining the category of Fraud/ name and
-#other information needed for each scheme of fraud like "Splitting PO/ Financial, Procurement Fraud"
-#relation with the query set 

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ccm.apps.CcmConfig',
     'fin.apps.FinConfig',
-    'django_extensions',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
