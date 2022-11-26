@@ -20,6 +20,12 @@ class POQuerySet(models.QuerySet):
         dups = self.values("Supplier", "Total_Net_Amt_Base", "Status").\
             filter(Status="Closed").\
                 annotate(count=Count("Total_Net_Amt_Base")).filter(count__gt=1).order_by('-count')
+        return dups
+    
+    def duplicate_amount_same_supplier_detail(self):
+        dups = self.values("Supplier", "Total_Net_Amt_Base", "Status").\
+            filter(Status="Closed").\
+                annotate(count=Count("Total_Net_Amt_Base")).filter(count__gt=1).order_by('-count')
         
         ret = self.filter(Supplier__in=dups.values_list("Supplier")).\
             filter(Status__in=dups.values_list("Status")).\
@@ -36,7 +42,6 @@ class POQuerySet(models.QuerySet):
     def sequential_purchases(self):
         pass
     
-
     def trend_of_pos(self):
         #jump in recieving PO (count & Amount) per supplier
         pass
