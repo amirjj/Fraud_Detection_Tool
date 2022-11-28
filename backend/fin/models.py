@@ -46,6 +46,21 @@ class POQuerySet(models.QuerySet):
         #jump in recieving PO (count & Amount) per supplier
         pass
 
+    def revised_POs(self):
+        """
+        revised POs need more attention:
+        -revised PO need commitee approval,
+        -attending in tender and winning with promisses without fulfillment
+        -same price with changing PO lines
+        """
+        return self.filter(Q("Revision_No") > 1)
+
+
+    def suppliers_with_top_po_revisions(self):
+        # attending in tender and winning with promisses without fulfillment
+        pass
+
+
     def different_invoicing_supplier(self):
         return self.filter(~Q(Supplier=F("Invoicing_Supplier")))
 
